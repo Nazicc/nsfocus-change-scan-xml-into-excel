@@ -1,0 +1,780 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0023)http://www.nsfocus.com/ -->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />		
+<script src="images/prototype.js" type="text/javascript"></script>
+<script src="images/cavy.js" type="text/javascript"></script>
+<script src="images/aurora.js" type="text/javascript"></script>
+<style type="text/css" media="all">
+@import "images/link.css";
+@import "images/aurora.css";
+@import "images/comm_table.css";
+</style>
+<style type='text/css'>
+html,body {overflow:visible;+overflow:auto} /* For print page in firefox */
+h1{padding:3px 50px;font-size:15px;}
+#reportTitle img{float:left}
+.bline { padding-top:5px;border-top-width:3px;border-top-style: solid;border-top-color: #bababa; width:645px }
+
+#summaryWithIndex,#vulnView,#osDistribution,#ipList,#vulnDistribution,#accounts,#standard,#ipSummaryWithIndex,#portwithvulnlist,#info { width:645px;clear:both; text-align:left }
+
+#summary h2, #vulnView h2,#osDistribution h2,#ipList h2,#vulnDistribution h2,#accounts h2,#standard h2,#portwithvulnlist h2,#info h2 { cursor:pointer;background: #bababa;font-weight:bold;line-height:25px;font-size:14px;padding:1px 0px 1px 1px;background-image:url(images/up.gif);background-repeat: no-repeat; background-position: right;margin:1px 0 0;}
+#summary { float:left;width:460px; }
+#summary table { width:100%;vertical-align:text-top;border-collapse:collapse;border-padding:0px; }
+#summary table tr th { width:20%;line-height:25px;vertical-align:text-top }
+#summary table tr td { text-align:left }
+
+#reportIndex { border:1px solid #bababa;width:175px; text-align:left; float:right; padding-bottom:10px;}
+#reportIndex h2 { line-height:25px;font-size:14px;padding-left:5px; }
+#reportIndex ul { list-style-type:none;margin:0px;list-style-position:outside;padding-left:5px;position:relative;}
+#reportIndex ul ol { list-style-type:none;margin:0px;list-style-position:inside;padding-left:5px }
+
+#vulnView h3,#accounts h3,#standard h3,#portwithvulnlist h3,#info h3 { cursor:pointer;font-size:13px;text-align:left;padding-left:15px;border-bottom:2px #bababa solid; background-image:url(images/up.gif);background-repeat: no-repeat; background-position: right;}
+#vulnView div img { clear:both;padding-bottom:5px; }
+#vulnView div table,#osDistribution table,#ipList table,#vulnDistribution table,#accounts table,#standard table,#portwithvulnlist table,#info table { width: 100%;border-collapse:collapse;border-padding:0px; }
+#vulnView div table tr th,#osDistribution table tr th,#ipList table tr th,#vulnDistribution table tr th,#accounts table tr th,#standard table tr th,#portwithvulnlist table tr th,#info table tr th { background:#d9d9d9;text-align:left;height:20px; border-bottom: 1px #bababa solid;padding-left:15px;white-space:normal; word-break:break-all;}
+#vulnView div table tr td,#osDistribution table tr td,#ipList table tr td,#vulnDistribution table tr td,#accounts table tr td,#standard table tr td,#portwithvulnlist table tr td,#info table tr td { text-align:left;border-bottom: 1px #bababa solid;padding-left:15px;white-space:normal; word-break:break-all;}
+#vulnView div table tr td.hv { background:#fedbcf }
+#vulnView div table tr td.mv { background:#f4e8ca }
+
+#info table caption { text-align:left; padding-left:15px; color: #707070 }
+
+#vulnDistribution table tr.vh td a,#portwithvulnlist table tr td ul li.vh a,#portwithvulnlist table tbody tr th.vh a { color:#e42b00 }
+#vulnDistribution table tr.vm td a,#portwithvulnlist table tr td ul li.vm a,#portwithvulnlist table tbody tr th.vm a { color:#ff9c00 }
+#vulnDistribution table tr.vl td a,#portwithvulnlist table tr td ul li.vl a,#portwithvulnlist table tbody tr th.vl a { color:#007f00 }
+
+#portwithvulnlist table tbody.lt tr th { background:transparent;vertical-align:text-top;white-space:nowrap }
+#portwithvulnlist table tbody.lt tr td { white-space:normal }
+#standard table tr.vh td { color:#e42b00 }
+#standard table tr.vm td { color:#ff9c00 }
+#standard table tr.vl td { color:#007f00 }
+#standard pre { word-wrap:break-word;text-align:left;padding-left:15px;}
+#standard div p { text-indent:0.6cm }
+#standard ul{padding:5px 20px;}
+#portwithvulnlist table tr td ul { list-style-type:none;margin:0px;list-style-position:outside;padding-left:5px }
+
+#summary h2.h2_show, #vulnView h2.h2_show, #osDistribution h2.h2_show, #ipList h2.h2_show, #vulnDistribution h2.h2_show, #accounts h2.h2_show, #standard h2.h2_show, #portwithvulnlist h2.h2_show, #info h2.h2_show { background-image: url(images/up.gif); background-position: right }
+#summary h2.h2_hide, #vulnView h2.h2_hide, #osDistribution h2.h2_hide, #ipList h2.h2_hide, #vulnDistribution h2.h2_hide, #accounts h2.h2_hide, #standard h2.h2_hide, #portwithvulnlist h2.h2_hide, #info h2.h2_hide { background-image: url(images/down.gif); background-position: right }
+
+</style>
+ <script language="JavaScript">
+ window.onload = function(){
+     setTitleList();
+     setTitle();
+ }
+ function setTitle(){
+     var h2 = $$('h2');
+     var h3 = $$('h3');
+     for(var i=0; i<h2.length; i++){
+         new Insertion.Top(h2[i], (i+1)+'.');
+     }
+     var preSeq = 1;
+     var secSeq = 1;
+     for(var j=0; j<h3.length; j++){
+         var preH2 = h3[j].previous('h2');
+         var index = h2.indexOf(preH2)+1;
+         if(index == 0) continue;
+         if(index != preSeq){
+             preSeq = index;
+             secSeq = 1;
+         }
+         new Insertion.Top(h3[j], preSeq+'.'+secSeq);
+         secSeq++;
+     }
+ }
+ function setTitleList(){
+     var arr = $$('#titleList li');
+     var nowSeq = 0;
+     var secSeq = 1;
+     for(var i=0; i<arr.length; i++){
+         if(arr[i].up(0).id !='titleList'){
+             new Insertion.Top(arr[i], nowSeq + '.' + secSeq);
+             secSeq++;
+             continue;
+         }
+         secSeq = 1;
+         nowSeq = nowSeq+1;
+         new Insertion.Top(arr[i], nowSeq + '.');
+     }
+ }
+</script>  
+<body>
+<script>
+Event.observe(document.body, 'click', function(event){
+    var elt = Event.element(event);
+    if ('H2' == elt.tagName){
+	    /*
+		var img = $(elt).style.backgroundImage;
+        if(!img || img == "url(images/up.gif)"){
+            $(elt).style.backgroundImage ="url(images/down.gif)";
+            $(elt).nextSiblings().invoke('hide');
+        }else if(img == "url(images/down.gif)"){
+            $(elt).style.backgroundImage ="url(images/up.gif)";
+            $(elt).nextSiblings().invoke('show');
+        }
+	*/
+		var h2class = $(elt).className;
+		if ( !h2class || h2class == "h2_show" ) {
+			$(elt).className = "h2_hide";
+			$(elt).nextSiblings().invoke('hide');
+		} else if ( h2class == "h2_hide") {
+			$(elt).className = "h2_show";
+			$(elt).nextSiblings().invoke('show');
+		}
+    }
+    if ('H3' == elt.tagName){
+        var n = $(elt).nextSiblings();
+        if(!n) return false;
+        for(var j=0; j<n.length; j++){
+            if(n[j].tagName == 'H3') break;
+            n[j].toggle();
+        }
+    }
+});
+</script>
+
+<center>
+<h1><img src="images/titlepic.gif">绿盟科技 远程安全评估系统 -- 10.83.7.55 评估报告</h1>
+<div class='bline'></div>
+<div id='ipSummaryWithIndex'>
+    <div id='summary'>
+        <h2>主机概况</h2>
+        <table class="cmn_table">
+            <tr class="even"><td>IP地址</td><td>10.83.7.55</td></tr>
+            <tr class="odd"><td>风险等级</td><td>非常危险</td></tr>
+            <tr class="even"><td>风险值</td><td>10</td></tr>
+            <tr class="odd"><td>主机名</td><td>ESPC55</td></tr>
+                                    <tr class="even"><td>操作系统</td><td>Windows Server 2003 R2 3790 Service Pack 2</td></tr>
+                        <tr class="odd"><td>Windows域</td><td>WORKGROUP</td></tr>
+            <tr class="even"><td>MAC地址</td><td>00:0c:29:d7:9d:83</td></tr>
+	    <tr style="display:none"><td>系统版本</td><td>5.0.12.9</td></tr> 
+        </table>
+    </div>
+    <div id='reportIndex'>
+        <h1>目录</h1>
+        <ul id='titleList'>
+            <li><a href="#ipSummaryWithIndex">主机概况</a></li>
+            <li><a href="#portwithvulnlist">漏洞</a></li>
+            <ol>
+                <li><a href="#vulSumary">漏洞综述</a></li>
+                            </ol>
+                        <li><a href="#info">信息</a></li>
+            <ol>
+	          	 <li><a href="#account">帐号信息</a></li>
+	          	 <li><a href="#host">主机信息</a></li>
+	            <li><a href="#net">网络信息</a></li>
+           	 <li><a href="#other">其他信息</a></li>
+            </ol>
+                    </ul>
+    </div>
+</div>
+<style type="text/css">
+.scanVulsResponse{background-color:#FFF;border:1px dashed #CCCCCC;padding:8px;}
+.scanVulsLink a{color:#df8800;font-family:Verdana;font-size:12px;}
+.atkResultLink a{color:#df8800;font-family:Verdana;font-size:12px;}
+</style>
+
+<script>
+function modifyScanVuls(obj){
+	if(confirm("确定要修正此条信息？")){
+		ajaxAction('/ipReport/modifyScanVuls', obj, function(r){
+			alert(r.responseText);
+			location.reload(true);	
+		});
+	}
+}
+Event.observe(window, 'load', function() {
+	var flag = true;
+	
+    Event.observe($('portwithvulnlist'), 'click', function(event){
+    	
+    	var elt = $(Event.findElement(event, 'A'));
+    	if(!elt) return;
+	    
+        var is_anchor = elt.readAttribute('href').startsWith("#") || elt.readAttribute('href').endsWith("#");
+    	//if (elt.readAttribute('href') == '#' && elt.className == 'responseAtk') {
+    	if (is_anchor && elt.className == 'responseAtk') {
+    		Element.up(elt, 'li').down('div', 1).toggle();
+	    	Event.stop(event);
+		    return;
+	    }
+
+    	//if(elt.readAttribute('href') == "#" && elt.className == 'responseMsg') {
+    	if(is_anchor && elt.className == 'responseMsg') {
+    		Element.up(elt,'li').down('div', 0).toggle(); //response
+    		Event.stop(event);
+    		return;
+    	}else if(flag) return; //offine tab jump
+    	var title = (elt.className == 'atkExploitLink' || elt.className == 'atkResultLink') ? "漏洞验证" : "漏洞描述";
+		top.dialog.show({title:title,url:elt.href,size:'big'});
+    	Event.stop(event);
+    });
+
+});
+
+</script>
+
+<div id='portwithvulnlist' name="portwithvulnlist">
+<h2><img src="images/vul.gif">漏洞</h2>
+
+<h3 id="vulSumary">漏洞综述</h3>
+
+<table class="cmn_table" style="word-wrap:break-word;word-break:break-all;">
+<tr class="second_title"><th width="60">端口</th><th width="70">协议</th><th width="100">服务</th><th>漏洞</th></tr>
+<tr class="odd"><td colspan="4">主机 ESPC55 的漏洞信息：</td></tr>
+<tr class="even"><td>--</td><td>--</td><td>--</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50631" class="vul-vl">允许Traceroute探测</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>路由跟踪列表:<br />10.83.7.55<br /></span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50638" class="vul-vl">ICMP timestamp请求响应漏洞</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>初始时间戳：00000000<br />接收时间戳：fb373401<br />传递时间戳：fb373401<br /></span>
+    	</div>
+        </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="odd"><td>23</td><td>TCP</td><td>TELNET</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag89051" class="vul-vl">检测到远端运行着telnet服务</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>telnet server has found</span>
+    	</div>
+        </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="even"><td>80</td><td>TCP</td><td>WWW-HTTP</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag71161" class="vul-vl">Apache服务器不完整HTTP请求拒绝服务漏洞[原理扫描]</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>330</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50857" class="vul-vl">远端WWW服务支持TRACE请求</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>调试信息: <br /><br />[HTTP/1.1 200 OK]<br />[Content-Type: message/http]<br />[X-Header: +&lt;.special.&gt;+]</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50188" class="vul-vl">远端HTTP服务器类型和版本信息泄漏</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>Version:<br />[Apache]</span>
+    	</div>
+        </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="odd"><td>135</td><td>TCP</td><td>MSRPC</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50396" class="vul-vl">DCE/RPC服务枚举漏洞</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : DHCP Client LRPC Endpoint<br />Interface UUID : 3c4728c5-f0ab-448b-bda1-6ce01eb0a6d5 ver:1.0<br />Binding        : ncalrpc:[dhcpcsvc]<br /><br />Object UUID    : c42132f5-5143-4211-854e-c281e4a48deb<br />Annotation     : <br />Interface UUID : 906b0ce0-c70b-1067-b317-00dd010662da ver:1.0<br />Binding        : ncalrpc:[OLE9E8488CB35934BA2848BFE4B7E63]<br /><br />Object UUID    : c42132f5-5143-4211-854e-c281e4a48deb<br />Annotation     : <br />Interface UUID : 906b0ce0-c70b-1067-b317-00dd010662da ver:1.0<br />Binding        : ncalrpc:[LRPC000013a4.00000001]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 12345778-1234-abcd-ef00-0123456789ac ver:1.0<br />Binding        : ncacn_np:\\ESPC55[\PIPE\lsass]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 12345778-1234-abcd-ef00-0123456789ac ver:1.0<br />Binding        : ncalrpc:[audit]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 12345778-1234-abcd-ef00-0123456789ac ver:1.0<br />Binding        : ncalrpc:[securityevent]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 12345778-1234-abcd-ef00-0123456789ac ver:1.0<br />Binding        : ncalrpc:[protected_storage]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 12345778-1234-abcd-ef00-0123456789ac ver:1.0<br />Binding        : ncacn_np:\\ESPC55[\PIPE\protected_storage]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 12345778-1234-abcd-ef00-0123456789ac ver:1.0<br />Binding        : ncalrpc:[dsrole]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 12345778-1234-abcd-ef00-0123456789ac ver:1.0<br />Binding        : ncacn_ip_tcp:10.83.7.55[1025]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : IPSec Policy agent endpoint<br />Interface UUID : 12345678-1234-abcd-ef00-0123456789ab ver:1.0<br />Binding        : ncacn_np:\\ESPC55[\PIPE\lsass]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : IPSec Policy agent endpoint<br />Interface UUID : 12345678-1234-abcd-ef00-0123456789ab ver:1.0<br />Binding        : ncalrpc:[audit]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : IPSec Policy agent endpoint<br />Interface UUID : 12345678-1234-abcd-ef00-0123456789ab ver:1.0<br />Binding        : ncalrpc:[securityevent]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : IPSec Policy agent endpoint<br />Interface UUID : 12345678-1234-abcd-ef00-0123456789ab ver:1.0<br />Binding        : ncalrpc:[protected_storage]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : IPSec Policy agent endpoint<br />Interface UUID : 12345678-1234-abcd-ef00-0123456789ab ver:1.0<br />Binding        : ncacn_np:\\ESPC55[\PIPE\protected_storage]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : IPSec Policy agent endpoint<br />Interface UUID : 12345678-1234-abcd-ef00-0123456789ab ver:1.0<br />Binding        : ncalrpc:[dsrole]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : IPSec Policy agent endpoint<br />Interface UUID : 12345678-1234-abcd-ef00-0123456789ab ver:1.0<br />Binding        : ncacn_ip_tcp:10.83.7.55[1025]<br /><br />Object UUID    : 81f87f5b-d9d8-4afa-8593-bbd0790d5abb<br />Annotation     : <br />Interface UUID : 906b0ce0-c70b-1067-b317-00dd010662da ver:1.0<br />Binding        : ncalrpc:[LRPC000003dc.00000001]<br /><br />Object UUID    : bbbb5747-53c0-44c6-9f55-3edfcf9edf01<br />Annotation     : <br />Interface UUID : 906b0ce0-c70b-1067-b317-00dd010662da ver:1.0<br />Binding        : ncalrpc:[LRPC000003dc.00000001]<br /><br />Object UUID    : 39aff01a-fbca-42f4-a305-d73f55dcee93<br />Annotation     : <br />Interface UUID : 906b0ce0-c70b-1067-b317-00dd010662da ver:1.0<br />Binding        : ncalrpc:[LRPC000003dc.00000001]<br /><br />Object UUID    : 2187c24a-53c8-44a3-9e8f-6039e755d5f8<br />Annotation     : <br />Interface UUID : 906b0ce0-c70b-1067-b317-00dd010662da ver:1.0<br />Binding        : ncalrpc:[LRPC000003dc.00000001]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 1ff70682-0a51-30e8-076d-740be8cee98b ver:1.0<br />Binding        : ncalrpc:[wzcsvc]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 1ff70682-0a51-30e8-076d-740be8cee98b ver:1.0<br />Binding        : ncalrpc:[OLE4273FCAFA11F468489E570534E12]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 1ff70682-0a51-30e8-076d-740be8cee98b ver:1.0<br />Binding        : ncacn_np:\\ESPC55[\PIPE\atsvc]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 378e52b0-c0a9-11cf-822d-00aa0051e40f ver:1.0<br />Binding        : ncalrpc:[wzcsvc]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 378e52b0-c0a9-11cf-822d-00aa0051e40f ver:1.0<br />Binding        : ncalrpc:[OLE4273FCAFA11F468489E570534E12]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 378e52b0-c0a9-11cf-822d-00aa0051e40f ver:1.0<br />Binding        : ncacn_np:\\ESPC55[\PIPE\atsvc]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 0a74ef1c-41a4-4e06-83ae-dc74fb1cdd53 ver:1.0<br />Binding        : ncalrpc:[wzcsvc]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 0a74ef1c-41a4-4e06-83ae-dc74fb1cdd53 ver:1.0<br />Binding        : ncalrpc:[OLE4273FCAFA11F468489E570534E12]<br /><br />Object UUID    : 00000000-0000-0000-0000-000000000000<br />Annotation     : <br />Interface UUID : 0a74ef1c-41a4-4e06-83ae-dc74fb1cdd53 ver:1.0<br />Binding        : ncacn_np:\\ESPC55[\PIPE\atsvc]<br /><br /></span>
+    	</div>
+        </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="even"><td>137</td><td>UDP</td><td>NETBIOS-NS</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50177" class="vul-vl">可通过NetBIOS名字服务端口远程获取系统信息</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>ESPC55         &lt;00&gt; UNIQUE<br />WORKGROUP      &lt;00&gt; GROUP<br />ESPC55         &lt;20&gt; UNIQUE<br />WORKGROUP      &lt;1E&gt; GROUP<br /><br />MAC Address = 00:0C:29:D7:9D:83</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50180" class="vul-vl">服务器服务正在运行</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>服务器服务注册了NetBIOS名: [ESPC55]</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50179" class="vul-vl">Windows Browser服务正在运行</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>Browser服务注册了NetBIOS名: [WORKGROUP]</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50178" class="vul-vl">工作站服务正在运行</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>工作站服务注册了NetBIOS名: [ESPC55]</span>
+    	</div>
+        </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="odd"><td>139</td><td>TCP</td><td>NETBIOS-SS</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vh'><img src='images/vh.gif' /> 
+     <a href="#tag72993" class="vul-vh">Microsoft Windows SMB操作解析远程代码执行漏洞(MS11-020)【原理扫描】</a>
+        
+          	
+             </li>
+<li class='vh'><img src='images/vh.gif' /> 
+     <a href="#tag50173" class="vul-vh">利用SMB会话可以获取远程共享列表</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>利用SMB会话[(空帐号)/(空口令)]可以获取远程共享列表:<br /><br />共享名          注释                           类型<br />---------------------------------------------------<br />C$              默认共享                       管理共享<br />IPC$            远程 IPC                       NT或更高版本进程间通信<br />ADMIN$          远程管理                       管理共享</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50894" class="vul-vl">Windows管理共享启动</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>ADMIN$</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50185" class="vul-vl">利用SMB会话可以获取远程浏览列表</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>利用SMB会话[(空帐号)/(空口令)]可以获取远程浏览列表:<br /><br />NetBIOS名       版本  注释                           类型<br />---------------------------------------------------------<br />BVS212          5.1   (没有注释)                     POTENTIAL_BROWSER <br />EPS-SERVER      5.2   (没有注释)                     BACKUP_BROWSER MASTER_BROWSER <br />ESPC55          5.2   (没有注释)                     BACKUP_BROWSER <br />MONITOR-PC      6.1   (没有注释)                     POTENTIAL_BROWSER <br />MPEG            5.1   (没有注释)                     POTENTIAL_BROWSER <br />NSFOCUS7-88     5.2   (没有注释)                     BACKUP_BROWSER <br />TEST-25AD171148 5.1   (没有注释)                     POTENTIAL_BROWSER <br />WIN-A4VDVA0V05Q 6.1   (没有注释)                     <br />WIN-OYWX68GHEZ2 6.0   (没有注释)                     DIALIN_SERVER</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50144" class="vul-vl">可通过空会话访问远程主机</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>结论系程序自动验证所得，如想额外地进行手工验证，请顺序执行如下命令进行简单测试:<br /><br />net use \\10.83.7.55\ipc$ /d /y<br />net use \\10.83.7.55\ipc$ &quot;&quot; /user:&quot;&quot;</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50186" class="vul-vl">利用SMB会话可以获取远程域或工作组列表</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>利用SMB会话[(空帐号)/(空口令)]可以获取远程域或工作组列表:<br /><br />NetBIOS名       版本  注释                           类型<br />---------------------------------------------------------<br />WORKGROUP       3.10  EPS-SERVER</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50171" class="vul-vl">可以获取远端Native Lan Manager版本</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>RET: [(空帐号)/(空口令)]<br /><br />File Server Service : ESPC55<br />Native OS           : Windows Server 2003 R2 3790 Service Pack 2<br />Native Lan Manager  : Windows Server 2003 R2 5.2<br />Primary Domain      : WORKGROUP</span>
+    	</div>
+        </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="even"><td>443</td><td>TCP</td><td>HTTPS</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50857" class="vul-vl">远端WWW服务支持TRACE请求</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>调试信息: <br /><br />[HTTP/1.0 200 OK]<br />[Content-Type: message/http]<br />[X-Header: +&lt;.special.&gt;+]</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag71247" class="vul-vl">检测到目标主机加密通信支持的加密算法</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>SSLv3:<br />EXP-RC4-MD5	Kx:RSA(512)	Au:RSA	Enc:RC4(40)	Mac:MD5	export<br />EXP-RC2-CBC-MD5	Kx:RSA(512)	Au:RSA	Enc:RC2(40)	Mac:MD5	export<br />RC4-MD5	Kx:RSA	Au:RSA	Enc:RC4(128)	Mac:MD5<br />RC4-SHA	Kx:RSA	Au:RSA	Enc:RC4(128)	Mac:SHA1<br />DES-CBC3-SHA	Kx:RSA	Au:RSA	Enc:3DES(168)	Mac:SHA1<br />EXP-DES-CBC-SHA	Kx:RSA(512)	Au:RSA	Enc:DES(40)	Mac:SHA1	export<br />DES-CBC-SHA	Kx:RSA	Au:RSA	Enc:DES(56)	Mac:SHA1<br />EDH-RSA-DES-CBC3-SHA	Kx:DH	Au:RSA	Enc:3DES(168)	Mac:SHA1<br />EXP-EDH-RSA-DES-CBC-SHA	Kx:DH(512)	Au:RSA	Enc:DES(40)	Mac:SHA1	export<br />EDH-RSA-DES-CBC-SHA	Kx:DH	Au:RSA	Enc:DES(56)	Mac:SHA1<br />TLSv1:<br />EXP-RC4-MD5	Kx:RSA(512)	Au:RSA	Enc:RC4(40)	Mac:MD5	export<br />EXP-RC2-CBC-MD5	Kx:RSA(512)	Au:RSA	Enc:RC2(40)	Mac:MD5	export<br />RC4-MD5	Kx:RSA	Au:RSA	Enc:RC4(128)	Mac:MD5<br />RC4-SHA	Kx:RSA	Au:RSA	Enc:RC4(128)	Mac:SHA1<br />DES-CBC3-SHA	Kx:RSA	Au:RSA	Enc:3DES(168)	Mac:SHA1<br />EXP-DES-CBC-SHA	Kx:RSA(512)	Au:RSA	Enc:DES(40)	Mac:SHA1	export<br />DES-CBC-SHA	Kx:RSA	Au:RSA	Enc:DES(56)	Mac:SHA1<br />AES128-SHA	Kx:RSA	Au:RSA	Enc:AES(128)	Mac:SHA1<br />DHE-RSA-AES128-SHA	Kx:DH	Au:RSA	Enc:AES(128)	Mac:SHA1<br />EDH-RSA-DES-CBC3-SHA	Kx:DH	Au:RSA	Enc:3DES(168)	Mac:SHA1<br />EXP-EDH-RSA-DES-CBC-SHA	Kx:DH(512)	Au:RSA	Enc:DES(40)	Mac:SHA1	export<br />EDH-RSA-DES-CBC-SHA	Kx:DH	Au:RSA	Enc:DES(56)	Mac:SHA1<br />AES256-SHA	Kx:RSA	Au:RSA	Enc:AES(256)	Mac:SHA1<br />DHE-RSA-AES256-SHA	Kx:DH	Au:RSA	Enc:AES(256)	Mac:SHA1<br /></span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag71248" class="vul-vl">检测到目标服务支持SSL弱加密算法</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>SSLv3 Weak Ciphers:<br />EXP-DES-CBC-SHA	Kx:RSA(512)	Au:RSA	Enc:DES(40)	Mac:SHA1	export<br />EXP-RC4-MD5	Kx:RSA(512)	Au:RSA	Enc:RC4(40)	Mac:MD5	export<br />EXP-RC2-CBC-MD5	Kx:RSA(512)	Au:RSA	Enc:RC2(40)	Mac:MD5	export<br />EXP-EDH-RSA-DES-CBC-SHA	Kx:DH(512)	Au:RSA	Enc:DES(40)	Mac:SHA1	export<br />TLSv1 Weak Ciphers:<br />EXP-DES-CBC-SHA	Kx:RSA(512)	Au:RSA	Enc:DES(40)	Mac:SHA1	export<br />EXP-RC4-MD5	Kx:RSA(512)	Au:RSA	Enc:RC4(40)	Mac:MD5	export<br />EXP-EDH-RSA-DES-CBC-SHA	Kx:DH(512)	Au:RSA	Enc:DES(40)	Mac:SHA1	export<br />EXP-RC2-CBC-MD5	Kx:RSA(512)	Au:RSA	Enc:RC2(40)	Mac:MD5	export<br /></span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag71249" class="vul-vl">检测到目标服务支持SSL中等强度加密算法</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>SSLv3 Medium Ciphers:<br />DES-CBC-SHA	Kx:RSA	Au:RSA	Enc:DES(56)	Mac:SHA1<br />EDH-RSA-DES-CBC-SHA	Kx:DH	Au:RSA	Enc:DES(56)	Mac:SHA1<br />TLSv1 Medium Ciphers:<br />DES-CBC-SHA	Kx:RSA	Au:RSA	Enc:DES(56)	Mac:SHA1<br />EDH-RSA-DES-CBC-SHA	Kx:DH	Au:RSA	Enc:DES(56)	Mac:SHA1<br /></span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50856" class="vul-vl">可通过HTTPS获取远端WWW服务版本信息</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>可通过HTTPS获取远端WWW服务版本信息: [Apache]</span>
+    	</div>
+        </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="odd"><td>445</td><td>TCP</td><td>MICROSOFT-DS</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vh'><img src='images/vh.gif' /> 
+     <a href="#tag72993" class="vul-vh">Microsoft Windows SMB操作解析远程代码执行漏洞(MS11-020)【原理扫描】</a>
+        
+          	
+             </li>
+<li class='vh'><img src='images/vh.gif' /> 
+     <a href="#tag73004" class="vul-vh">Microsoft Windows SMB池溢出远程代码执行漏洞（MS10-054）[基于MS09-001]</a>
+        
+          	
+             </li>
+<li class='vh'><img src='images/vh.gif' /> 
+     <a href="#tag72996" class="vul-vh">Microsoft Windows SMB NT Trans2请求远程拒绝服务及代码执行漏洞（MS09-001）【原理扫描】</a>
+        
+          	
+             </li>
+<li class='vh'><img src='images/vh.gif' /> 
+     <a href="#tag72995" class="vul-vh">Microsoft Windows SMB NT Trans请求缓冲区溢出漏洞（MS09-001）【原理扫描】</a>
+        
+          	
+             </li>
+<li class='vh'><img src='images/vh.gif' /> 
+     <a href="#tag50900" class="vul-vh">Windows Server服务RPC请求缓冲区溢出漏洞(MS08-067)[原理扫描]</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>RET: [0x0000084B]</span>
+    	</div>
+        </li>
+<li class='vh'><img src='images/vh.gif' /> 
+     <a href="#tag73005" class="vul-vh">Microsoft Windows SMB路径名远程溢出漏洞（MS10-012）[基于MS09-001]</a>
+        
+          	
+             </li>
+<li class='vh'><img src='images/vh.gif' /> 
+     <a href="#tag72994" class="vul-vh">Microsoft Windows SMB WRITE_ANDX处理拒绝服务漏洞(MS09-001)【原理扫描】</a>
+        
+          	
+             </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50781" class="vul-vl">利用SMB会话可以获取目标主机配置信息</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>利用SMB会话[(空帐号)/(空口令)]可以获取目标主机配置信息:<br /><br />Name        : 10.83.7.55<br />PlatformId  : [0x000001F4] NT<br />Version     : 5.2<br />Type        : [0x00829003] BACKUP_BROWSER <br />Comment     : (没有注释)</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50783" class="vul-vl">利用SMB会话可以获取RDR所管理的传输层协议信息</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>利用SMB会话[(空帐号)/(空口令)]可以获取RDR所管理的传输层协议信息:<br /><br />Quality of service      : 65535<br />Number of clients       : 0<br />Transport name          : \Device\NetbiosSmb<br />Transport address       : 000000000000<br />WAN transport protocol  : TRUE<br /><br />Quality of service      : 65535<br />Number of clients       : 0<br />Transport name          : \Device\NetBT_Tcpip_{D80ECBE6-36E7-437E-8B8A-95612B3F4895}<br />Transport address       : 000C29D79D83<br />WAN transport protocol  : TRUE<br /></span>
+    	</div>
+        </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="even"><td>1025</td><td>TCP</td><td>BLACKJACK</td><td>
+<!--Start of plugin-->
+<ul>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="odd"><td>3389</td><td>TCP</td><td>MS-WBT-SERVER</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vh'><img src='images/vh.gif' /> 
+     <a href="#tag71518" class="vul-vh">Microsoft远程桌面协议RDP远程代码可执行漏洞(MS12-020)【原理扫描】</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>MS12_020_KB2621440</span>
+    	</div>
+        </li>
+<li class='vm'><img src='images/vm.gif' /> 
+     <a href="#tag50407" class="vul-vm">Microsoft Windows远程桌面协议中间人攻击漏洞</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>远端终端服务易遭受Mitm攻击!</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50414" class="vul-vl">Windows终端服务器通信加密级别检查</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>远端终端服务器当前加密级别设置为(2):中或客户端兼容模式</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50390" class="vul-vl">检测到目标主机上运行着Windows终端服务</a>
+        
+          	
+             </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="even"><td>5002</td><td>TCP</td><td>RFE</td><td>
+<!--Start of plugin-->
+<ul>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="odd"><td>5003</td><td>TCP</td><td>FMPRO-INTERNAL</td><td>
+<!--Start of plugin-->
+<ul>
+</ul>
+<!--End of plugin-->
+</td></tr>
+</table>
+
+
+</div>
+<div id='info' >
+<h2><img src="images/detail.gif">信息</h2>
+<h3 id="account"><img src="images/account.gif">帐号信息</h3>
+<h3 id="host"><img src="images/host.gif">主机信息</h3>
+<div class='ipscaninfo'>
+<table class="cmn_table" class='ipscaninfoData' >
+<caption>共享信息</caption>
+<tr class="second_title">
+        <th>共享名字</th>
+        <th>注释</th>
+        <th>类型</th>
+        <th>物理路径</th>
+    </tr>
+
+<tr class="odd">
+        <td>ADMIN$</td>
+        <td>远程管理</td>
+        <td>管理共享</td>
+        <td></td>
+    <tr class="even">
+        <td>C$</td>
+        <td>默认共享</td>
+        <td>管理共享</td>
+        <td></td>
+    <tr class="odd">
+        <td>IPC$</td>
+        <td>远程 IPC</td>
+        <td>NT或更高版本进程间通信</td>
+        <td></td>
+    </table>
+</div>
+<div class='ipscaninfo'>
+<table class="cmn_table" class='ipscaninfoData' >
+<caption>安装软件信息</caption>
+<tr class="second_title">
+        <th>软件名称</th>
+        <th>版本号</th>
+    </tr>
+
+<tr class="odd">
+        <td>Apache</td>
+        <td></td>
+    </table>
+</div>
+<div class='ipscaninfo'>
+<table class="cmn_table" class='ipscaninfoData' >
+<caption>开放服务</caption>
+<tr class="second_title">
+        <th>服务名称</th>
+    </tr>
+
+<tr class="odd">
+        <td>Computer Browser/Browser</td>
+    <tr class="even">
+        <td>Server/lanmanserver</td>
+    <tr class="odd">
+        <td>Windows Terminal Server(RDP) Version 5.x key exchange:RDP4-style RC4 128bit Supported</td>
+    <tr class="even">
+        <td>Workstation/lanmanworkstation</td>
+    </table>
+</div>
+<h3 id="net"><img src="images/net.gif">网络信息</h3>
+<div class='ipscaninfo'>
+<table class="cmn_table" class='ipscaninfoData' >
+<caption>端口信息</caption>
+<tr class="second_title">
+        <th>端口</th>
+        <th>协议</th>
+        <th>服务</th>
+        <th>状态</th>
+    </tr>
+
+<tr class="odd">
+        <td>23</td>
+        <td>tcp</td>
+        <td>telnet</td>
+        <td>open</td>
+    <tr class="even">
+        <td>80</td>
+        <td>tcp</td>
+        <td>www-http</td>
+        <td>open</td>
+    <tr class="odd">
+        <td>135</td>
+        <td>tcp</td>
+        <td>msrpc</td>
+        <td>open</td>
+    <tr class="even">
+        <td>137</td>
+        <td>udp</td>
+        <td>NetBIOS-NS</td>
+        <td>open</td>
+    <tr class="odd">
+        <td>139</td>
+        <td>tcp</td>
+        <td>NetBIOS-SS</td>
+        <td>open</td>
+    <tr class="even">
+        <td>443</td>
+        <td>tcp</td>
+        <td>HTTPS</td>
+        <td>open</td>
+    <tr class="odd">
+        <td>445</td>
+        <td>tcp</td>
+        <td>microsoft-ds</td>
+        <td>open</td>
+    <tr class="even">
+        <td>1025</td>
+        <td>tcp</td>
+        <td>blackjack</td>
+        <td>open</td>
+    <tr class="odd">
+        <td>3389</td>
+        <td>tcp</td>
+        <td>ms-wbt-server</td>
+        <td>open</td>
+    <tr class="even">
+        <td>5002</td>
+        <td>tcp</td>
+        <td>rfe</td>
+        <td>open</td>
+    <tr class="odd">
+        <td>5003</td>
+        <td>tcp</td>
+        <td>fmpro-internal</td>
+        <td>open</td>
+    </table>
+</div>
+<div class='ipscaninfo'>
+<table class="cmn_table" class='ipscaninfoData' >
+<caption>端口Banner</caption>
+<tr class="second_title">
+        <th>端口</th>
+        <th>Banner</th>
+    </tr>
+
+<tr class="odd">
+        <td>23</td>
+        <td>Welcome to Microsoft Telnet Service login:</td>
+    <tr class="even">
+        <td>80</td>
+        <td>Apache</td>
+    <tr class="odd">
+        <td>443</td>
+        <td>Apache</td>
+    <tr class="even">
+        <td>5002</td>
+        <td>AMQP</td>
+    </table>
+</div>
+<h3 id="other"><img src="images/other.gif">其他信息</h3>
+</div>
+<div class='bline'></div>
+<img src='images/titlepic1.jpg'>绿盟科技“远程安全评估系统”</center>
+<div id="statusInformation" style="display:none;"><img src='/images/loading.gif' /> 数据加载中,请稍候...</div>
+<div id="responseMessage" style="display:none;"><!--返回提示信息--></div>
+</body>
+</html>

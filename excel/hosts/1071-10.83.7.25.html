@@ -1,0 +1,544 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0023)http://www.nsfocus.com/ -->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />		
+<script src="images/prototype.js" type="text/javascript"></script>
+<script src="images/cavy.js" type="text/javascript"></script>
+<script src="images/aurora.js" type="text/javascript"></script>
+<style type="text/css" media="all">
+@import "images/link.css";
+@import "images/aurora.css";
+@import "images/comm_table.css";
+</style>
+<style type='text/css'>
+html,body {overflow:visible;+overflow:auto} /* For print page in firefox */
+h1{padding:3px 50px;font-size:15px;}
+#reportTitle img{float:left}
+.bline { padding-top:5px;border-top-width:3px;border-top-style: solid;border-top-color: #bababa; width:645px }
+
+#summaryWithIndex,#vulnView,#osDistribution,#ipList,#vulnDistribution,#accounts,#standard,#ipSummaryWithIndex,#portwithvulnlist,#info { width:645px;clear:both; text-align:left }
+
+#summary h2, #vulnView h2,#osDistribution h2,#ipList h2,#vulnDistribution h2,#accounts h2,#standard h2,#portwithvulnlist h2,#info h2 { cursor:pointer;background: #bababa;font-weight:bold;line-height:25px;font-size:14px;padding:1px 0px 1px 1px;background-image:url(images/up.gif);background-repeat: no-repeat; background-position: right;margin:1px 0 0;}
+#summary { float:left;width:460px; }
+#summary table { width:100%;vertical-align:text-top;border-collapse:collapse;border-padding:0px; }
+#summary table tr th { width:20%;line-height:25px;vertical-align:text-top }
+#summary table tr td { text-align:left }
+
+#reportIndex { border:1px solid #bababa;width:175px; text-align:left; float:right; padding-bottom:10px;}
+#reportIndex h2 { line-height:25px;font-size:14px;padding-left:5px; }
+#reportIndex ul { list-style-type:none;margin:0px;list-style-position:outside;padding-left:5px;position:relative;}
+#reportIndex ul ol { list-style-type:none;margin:0px;list-style-position:inside;padding-left:5px }
+
+#vulnView h3,#accounts h3,#standard h3,#portwithvulnlist h3,#info h3 { cursor:pointer;font-size:13px;text-align:left;padding-left:15px;border-bottom:2px #bababa solid; background-image:url(images/up.gif);background-repeat: no-repeat; background-position: right;}
+#vulnView div img { clear:both;padding-bottom:5px; }
+#vulnView div table,#osDistribution table,#ipList table,#vulnDistribution table,#accounts table,#standard table,#portwithvulnlist table,#info table { width: 100%;border-collapse:collapse;border-padding:0px; }
+#vulnView div table tr th,#osDistribution table tr th,#ipList table tr th,#vulnDistribution table tr th,#accounts table tr th,#standard table tr th,#portwithvulnlist table tr th,#info table tr th { background:#d9d9d9;text-align:left;height:20px; border-bottom: 1px #bababa solid;padding-left:15px;white-space:normal; word-break:break-all;}
+#vulnView div table tr td,#osDistribution table tr td,#ipList table tr td,#vulnDistribution table tr td,#accounts table tr td,#standard table tr td,#portwithvulnlist table tr td,#info table tr td { text-align:left;border-bottom: 1px #bababa solid;padding-left:15px;white-space:normal; word-break:break-all;}
+#vulnView div table tr td.hv { background:#fedbcf }
+#vulnView div table tr td.mv { background:#f4e8ca }
+
+#info table caption { text-align:left; padding-left:15px; color: #707070 }
+
+#vulnDistribution table tr.vh td a,#portwithvulnlist table tr td ul li.vh a,#portwithvulnlist table tbody tr th.vh a { color:#e42b00 }
+#vulnDistribution table tr.vm td a,#portwithvulnlist table tr td ul li.vm a,#portwithvulnlist table tbody tr th.vm a { color:#ff9c00 }
+#vulnDistribution table tr.vl td a,#portwithvulnlist table tr td ul li.vl a,#portwithvulnlist table tbody tr th.vl a { color:#007f00 }
+
+#portwithvulnlist table tbody.lt tr th { background:transparent;vertical-align:text-top;white-space:nowrap }
+#portwithvulnlist table tbody.lt tr td { white-space:normal }
+#standard table tr.vh td { color:#e42b00 }
+#standard table tr.vm td { color:#ff9c00 }
+#standard table tr.vl td { color:#007f00 }
+#standard pre { word-wrap:break-word;text-align:left;padding-left:15px;}
+#standard div p { text-indent:0.6cm }
+#standard ul{padding:5px 20px;}
+#portwithvulnlist table tr td ul { list-style-type:none;margin:0px;list-style-position:outside;padding-left:5px }
+
+#summary h2.h2_show, #vulnView h2.h2_show, #osDistribution h2.h2_show, #ipList h2.h2_show, #vulnDistribution h2.h2_show, #accounts h2.h2_show, #standard h2.h2_show, #portwithvulnlist h2.h2_show, #info h2.h2_show { background-image: url(images/up.gif); background-position: right }
+#summary h2.h2_hide, #vulnView h2.h2_hide, #osDistribution h2.h2_hide, #ipList h2.h2_hide, #vulnDistribution h2.h2_hide, #accounts h2.h2_hide, #standard h2.h2_hide, #portwithvulnlist h2.h2_hide, #info h2.h2_hide { background-image: url(images/down.gif); background-position: right }
+
+</style>
+ <script language="JavaScript">
+ window.onload = function(){
+     setTitleList();
+     setTitle();
+ }
+ function setTitle(){
+     var h2 = $$('h2');
+     var h3 = $$('h3');
+     for(var i=0; i<h2.length; i++){
+         new Insertion.Top(h2[i], (i+1)+'.');
+     }
+     var preSeq = 1;
+     var secSeq = 1;
+     for(var j=0; j<h3.length; j++){
+         var preH2 = h3[j].previous('h2');
+         var index = h2.indexOf(preH2)+1;
+         if(index == 0) continue;
+         if(index != preSeq){
+             preSeq = index;
+             secSeq = 1;
+         }
+         new Insertion.Top(h3[j], preSeq+'.'+secSeq);
+         secSeq++;
+     }
+ }
+ function setTitleList(){
+     var arr = $$('#titleList li');
+     var nowSeq = 0;
+     var secSeq = 1;
+     for(var i=0; i<arr.length; i++){
+         if(arr[i].up(0).id !='titleList'){
+             new Insertion.Top(arr[i], nowSeq + '.' + secSeq);
+             secSeq++;
+             continue;
+         }
+         secSeq = 1;
+         nowSeq = nowSeq+1;
+         new Insertion.Top(arr[i], nowSeq + '.');
+     }
+ }
+</script>  
+<body>
+<script>
+Event.observe(document.body, 'click', function(event){
+    var elt = Event.element(event);
+    if ('H2' == elt.tagName){
+	    /*
+		var img = $(elt).style.backgroundImage;
+        if(!img || img == "url(images/up.gif)"){
+            $(elt).style.backgroundImage ="url(images/down.gif)";
+            $(elt).nextSiblings().invoke('hide');
+        }else if(img == "url(images/down.gif)"){
+            $(elt).style.backgroundImage ="url(images/up.gif)";
+            $(elt).nextSiblings().invoke('show');
+        }
+	*/
+		var h2class = $(elt).className;
+		if ( !h2class || h2class == "h2_show" ) {
+			$(elt).className = "h2_hide";
+			$(elt).nextSiblings().invoke('hide');
+		} else if ( h2class == "h2_hide") {
+			$(elt).className = "h2_show";
+			$(elt).nextSiblings().invoke('show');
+		}
+    }
+    if ('H3' == elt.tagName){
+        var n = $(elt).nextSiblings();
+        if(!n) return false;
+        for(var j=0; j<n.length; j++){
+            if(n[j].tagName == 'H3') break;
+            n[j].toggle();
+        }
+    }
+});
+</script>
+
+<center>
+<h1><img src="images/titlepic.gif">绿盟科技 远程安全评估系统 -- 10.83.7.25 评估报告</h1>
+<div class='bline'></div>
+<div id='ipSummaryWithIndex'>
+    <div id='summary'>
+        <h2>主机概况</h2>
+        <table class="cmn_table">
+            <tr class="even"><td>IP地址</td><td>10.83.7.25</td></tr>
+            <tr class="odd"><td>风险等级</td><td>非常危险</td></tr>
+            <tr class="even"><td>风险值</td><td>8</td></tr>
+            <tr class="odd"><td>主机名</td><td>MPEG</td></tr>
+                                    <tr class="even"><td>操作系统</td><td>Windows 5.1</td></tr>
+                        <tr class="odd"><td>Windows域</td><td>WORKGROUP</td></tr>
+            <tr class="even"><td>MAC地址</td><td>00:0c:29:eb:c9:24</td></tr>
+	    <tr style="display:none"><td>系统版本</td><td>5.0.12.9</td></tr> 
+        </table>
+    </div>
+    <div id='reportIndex'>
+        <h1>目录</h1>
+        <ul id='titleList'>
+            <li><a href="#ipSummaryWithIndex">主机概况</a></li>
+            <li><a href="#portwithvulnlist">漏洞</a></li>
+            <ol>
+                <li><a href="#vulSumary">漏洞综述</a></li>
+                            </ol>
+                        <li><a href="#info">信息</a></li>
+            <ol>
+	          	 <li><a href="#account">帐号信息</a></li>
+	          	 <li><a href="#host">主机信息</a></li>
+	            <li><a href="#net">网络信息</a></li>
+           	 <li><a href="#other">其他信息</a></li>
+            </ol>
+                    </ul>
+    </div>
+</div>
+<style type="text/css">
+.scanVulsResponse{background-color:#FFF;border:1px dashed #CCCCCC;padding:8px;}
+.scanVulsLink a{color:#df8800;font-family:Verdana;font-size:12px;}
+.atkResultLink a{color:#df8800;font-family:Verdana;font-size:12px;}
+</style>
+
+<script>
+function modifyScanVuls(obj){
+	if(confirm("确定要修正此条信息？")){
+		ajaxAction('/ipReport/modifyScanVuls', obj, function(r){
+			alert(r.responseText);
+			location.reload(true);	
+		});
+	}
+}
+Event.observe(window, 'load', function() {
+	var flag = true;
+	
+    Event.observe($('portwithvulnlist'), 'click', function(event){
+    	
+    	var elt = $(Event.findElement(event, 'A'));
+    	if(!elt) return;
+	    
+        var is_anchor = elt.readAttribute('href').startsWith("#") || elt.readAttribute('href').endsWith("#");
+    	//if (elt.readAttribute('href') == '#' && elt.className == 'responseAtk') {
+    	if (is_anchor && elt.className == 'responseAtk') {
+    		Element.up(elt, 'li').down('div', 1).toggle();
+	    	Event.stop(event);
+		    return;
+	    }
+
+    	//if(elt.readAttribute('href') == "#" && elt.className == 'responseMsg') {
+    	if(is_anchor && elt.className == 'responseMsg') {
+    		Element.up(elt,'li').down('div', 0).toggle(); //response
+    		Event.stop(event);
+    		return;
+    	}else if(flag) return; //offine tab jump
+    	var title = (elt.className == 'atkExploitLink' || elt.className == 'atkResultLink') ? "漏洞验证" : "漏洞描述";
+		top.dialog.show({title:title,url:elt.href,size:'big'});
+    	Event.stop(event);
+    });
+
+});
+
+</script>
+
+<div id='portwithvulnlist' name="portwithvulnlist">
+<h2><img src="images/vul.gif">漏洞</h2>
+
+<h3 id="vulSumary">漏洞综述</h3>
+
+<table class="cmn_table" style="word-wrap:break-word;word-break:break-all;">
+<tr class="second_title"><th width="60">端口</th><th width="70">协议</th><th width="100">服务</th><th>漏洞</th></tr>
+<tr class="odd"><td colspan="4">主机 MPEG 的漏洞信息：</td></tr>
+<tr class="even"><td>--</td><td>--</td><td>--</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50631" class="vul-vl">允许Traceroute探测</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>路由跟踪列表:<br />10.83.7.25<br /></span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50638" class="vul-vl">ICMP timestamp请求响应漏洞</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>初始时间戳：00000000<br />接收时间戳：83f73301<br />传递时间戳：83f73301<br /></span>
+    	</div>
+        </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="odd"><td>23</td><td>TCP</td><td>TELNET</td><td>
+<!--Start of plugin-->
+<ul>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="even"><td>123</td><td>UDP</td><td>NTP</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag110438" class="vul-vl">检测到目标主机上运行着NTP服务</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>NTP Server is running on remote server, protocol version 3</span>
+    	</div>
+        </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="odd"><td>135</td><td>TCP</td><td>MSRPC</td><td>
+<!--Start of plugin-->
+<ul>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="even"><td>137</td><td>UDP</td><td>NETBIOS-NS</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50177" class="vul-vl">可通过NetBIOS名字服务端口远程获取系统信息</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>MPEG           &lt;00&gt; UNIQUE<br />WORKGROUP      &lt;00&gt; GROUP<br />MPEG           &lt;20&gt; UNIQUE<br />WORKGROUP      &lt;1E&gt; GROUP<br /><br />MAC Address = 00:0C:29:EB:C9:24</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50180" class="vul-vl">服务器服务正在运行</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>服务器服务注册了NetBIOS名: [MPEG]</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50179" class="vul-vl">Windows Browser服务正在运行</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>Browser服务注册了NetBIOS名: [WORKGROUP]</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50178" class="vul-vl">工作站服务正在运行</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>工作站服务注册了NetBIOS名: [MPEG]</span>
+    	</div>
+        </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="odd"><td>139</td><td>TCP</td><td>NETBIOS-SS</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vh'><img src='images/vh.gif' /> 
+     <a href="#tag50173" class="vul-vh">利用SMB会话可以获取远程共享列表</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>利用SMB会话[(空帐号)/(空口令)]可以获取远程共享列表:<br /><br />共享名          注释                           类型<br />---------------------------------------------------<br />IPC$            远程 IPC                       NT或更高版本进程间通信<br />D$              默认共享                       管理共享<br />ADMIN$          远程管理                       管理共享<br />C$              默认共享                       管理共享</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50894" class="vul-vl">Windows管理共享启动</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>ADMIN$</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50144" class="vul-vl">可通过空会话访问远程主机</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>结论系程序自动验证所得，如想额外地进行手工验证，请顺序执行如下命令进行简单测试:<br /><br />net use \\10.83.7.25\ipc$ /d /y<br />net use \\10.83.7.25\ipc$ &quot;&quot; /user:&quot;&quot;</span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50171" class="vul-vl">可以获取远端Native Lan Manager版本</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>RET: [(空帐号)/(空口令)]<br /><br />File Server Service : MPEG<br />Native OS           : Windows 5.1<br />Native Lan Manager  : Windows 2000 LAN Manager<br />Primary Domain      : WORKGROUP</span>
+    	</div>
+        </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="even"><td>445</td><td>TCP</td><td>MICROSOFT-DS</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50782" class="vul-vl">利用SMB会话可以获取登录到目标主机的用户信息</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>利用SMB会话[(空帐号)/(空口令)]可以获取登录到目标主机的用户信息:<br /><br />User name           : MPEG$<br />Domain name         : WORKGROUP<br />Other domain list   : <br />Logon_server        : <br /><br />User name           : Administrator<br />Domain name         : MPEG<br />Other domain list   : <br />Logon_server        : MPEG<br /><br />User name           : Administrator<br />Domain name         : MPEG<br />Other domain list   : <br />Logon_server        : MPEG<br /></span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50783" class="vul-vl">利用SMB会话可以获取RDR所管理的传输层协议信息</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>利用SMB会话[(空帐号)/(空口令)]可以获取RDR所管理的传输层协议信息:<br /><br />Quality of service      : 65535<br />Number of clients       : 0<br />Transport name          : \Device\NetbiosSmb<br />Transport address       : 000000000000<br />WAN transport protocol  : TRUE<br /><br />Quality of service      : 65535<br />Number of clients       : 0<br />Transport name          : \Device\NetBT_Tcpip_{658F8DBA-E859-4009-A25C-9C911A7079C0}<br />Transport address       : 000C29EBC924<br />WAN transport protocol  : TRUE<br /></span>
+    	</div>
+        </li>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50781" class="vul-vl">利用SMB会话可以获取目标主机配置信息</a>
+        
+     <span class="scanVulsLink"><a href="#" class="responseMsg">
+     	<img  src="images/response_msg.gif" title="返回信息"/></a></span>
+          	
+         <div class='scanVulsResponse' style="display:none">
+    	<span>利用SMB会话[(空帐号)/(空口令)]可以获取目标主机配置信息:<br /><br />Name        : 10.83.7.25<br />PlatformId  : [0x000001F4] NT<br />Version     : 5.1<br />Type        : [0x00011003] POTENTIAL_BROWSER <br />Comment     : (没有注释)</span>
+    	</div>
+        </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+<tr class="odd"><td>3389</td><td>TCP</td><td>MS-WBT-SERVER</td><td>
+<!--Start of plugin-->
+<ul>
+<li class='vl'><img src='images/vl.gif' /> 
+     <a href="#tag50390" class="vul-vl">检测到目标主机上运行着Windows终端服务</a>
+        
+          	
+             </li>
+</ul>
+<!--End of plugin-->
+</td></tr>
+</table>
+
+
+</div>
+<div id='info' >
+<h2><img src="images/detail.gif">信息</h2>
+<h3 id="account"><img src="images/account.gif">帐号信息</h3>
+<h3 id="host"><img src="images/host.gif">主机信息</h3>
+<div class='ipscaninfo'>
+<table class="cmn_table" class='ipscaninfoData' >
+<caption>共享信息</caption>
+<tr class="second_title">
+        <th>共享名字</th>
+        <th>注释</th>
+        <th>类型</th>
+        <th>物理路径</th>
+    </tr>
+
+<tr class="odd">
+        <td>ADMIN$</td>
+        <td>远程管理</td>
+        <td>管理共享</td>
+        <td></td>
+    <tr class="even">
+        <td>C$</td>
+        <td>默认共享</td>
+        <td>管理共享</td>
+        <td></td>
+    <tr class="odd">
+        <td>D$</td>
+        <td>默认共享</td>
+        <td>管理共享</td>
+        <td></td>
+    <tr class="even">
+        <td>IPC$</td>
+        <td>远程 IPC</td>
+        <td>NT或更高版本进程间通信</td>
+        <td></td>
+    </table>
+</div>
+<div class='ipscaninfo'>
+<table class="cmn_table" class='ipscaninfoData' >
+<caption>开放服务</caption>
+<tr class="second_title">
+        <th>服务名称</th>
+    </tr>
+
+<tr class="odd">
+        <td>Computer Browser/Browser</td>
+    <tr class="even">
+        <td>Server/lanmanserver</td>
+    <tr class="odd">
+        <td>Windows Terminal Server(RDP)</td>
+    <tr class="even">
+        <td>Workstation/lanmanworkstation</td>
+    </table>
+</div>
+<h3 id="net"><img src="images/net.gif">网络信息</h3>
+<div class='ipscaninfo'>
+<table class="cmn_table" class='ipscaninfoData' >
+<caption>端口信息</caption>
+<tr class="second_title">
+        <th>端口</th>
+        <th>协议</th>
+        <th>服务</th>
+        <th>状态</th>
+    </tr>
+
+<tr class="odd">
+        <td>23</td>
+        <td>tcp</td>
+        <td>telnet</td>
+        <td>open</td>
+    <tr class="even">
+        <td>123</td>
+        <td>udp</td>
+        <td>ntp</td>
+        <td>open</td>
+    <tr class="odd">
+        <td>135</td>
+        <td>tcp</td>
+        <td>msrpc</td>
+        <td>open</td>
+    <tr class="even">
+        <td>137</td>
+        <td>udp</td>
+        <td>NetBIOS-NS</td>
+        <td>open</td>
+    <tr class="odd">
+        <td>139</td>
+        <td>tcp</td>
+        <td>NetBIOS-SS</td>
+        <td>open</td>
+    <tr class="even">
+        <td>445</td>
+        <td>tcp</td>
+        <td>microsoft-ds</td>
+        <td>open</td>
+    <tr class="odd">
+        <td>3389</td>
+        <td>tcp</td>
+        <td>ms-wbt-server</td>
+        <td>open</td>
+    </table>
+</div>
+<div class='ipscaninfo'>
+<table class="cmn_table" class='ipscaninfoData' >
+<caption>端口Banner</caption>
+<tr class="second_title">
+        <th>端口</th>
+        <th>Banner</th>
+    </tr>
+
+<tr class="odd">
+        <td>23</td>
+        <td> telnet</td>
+    </table>
+</div>
+<h3 id="other"><img src="images/other.gif">其他信息</h3>
+</div>
+<div class='bline'></div>
+<img src='images/titlepic1.jpg'>绿盟科技“远程安全评估系统”</center>
+<div id="statusInformation" style="display:none;"><img src='/images/loading.gif' /> 数据加载中,请稍候...</div>
+<div id="responseMessage" style="display:none;"><!--返回提示信息--></div>
+</body>
+</html>
